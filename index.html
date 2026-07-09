@@ -4,142 +4,148 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Discovery Freelancer Wiki</title>
-<style>
-:root {
-  --bg: #0d1117; --bg2: #161b22; --bg3: #21262d;
-  --border: #30363d; --accent: #58a6ff; --accent2: #f78166;
-  --text: #e6edf3; --text2: #8b949e; --green: #3fb950;
-  --yellow: #d29922; --purple: #bc8cff; --orange: #ffa657;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; }
-nav { background: var(--bg2); border-bottom: 1px solid var(--border); padding: 0 24px; display: flex; align-items: center; gap: 16px; height: 56px; position: sticky; top: 0; z-index: 100; flex-wrap: wrap; }
-.logo { font-weight: 800; font-size: 1.15rem; color: var(--accent); }
-.logo span { color: var(--accent2); }
-.nav-links { display: flex; gap: 4px; }
-.nav-links button { background: none; border: none; color: var(--text2); cursor: pointer; padding: 6px 14px; border-radius: 6px; font-size: 0.88rem; transition: all .2s; }
-.nav-links button:hover, .nav-links button.active { background: var(--bg3); color: var(--text); }
-.search-wrap { flex: 1; max-width: 380px; margin-left: auto; position: relative; }
-.search-wrap input { width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 8px; padding: 7px 14px 7px 34px; color: var(--text); font-size: 0.88rem; outline: none; }
-.search-wrap input:focus { border-color: var(--accent); }
-.search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text2); }
-main { max-width: 1200px; margin: 0 auto; padding: 24px 20px 80px; }
-.page { display: none; }
-.page.active { display: block; }
-
-/* HERO */
-.hero { text-align: center; padding: 48px 0 36px; }
-.hero h1 { font-size: 2.6rem; font-weight: 800; background: linear-gradient(135deg, var(--accent), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-.hero p { color: var(--text2); margin-top: 10px; font-size: 1rem; }
-.stat-row { display: flex; gap: 20px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
-.stat-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 18px 32px; text-align: center; }
-.stat-box .n { font-size: 2rem; font-weight: 800; color: var(--accent); }
-.stat-box .l { color: var(--text2); font-size: 0.82rem; margin-top: 4px; }
-.quick-links { display: flex; gap: 14px; justify-content: center; margin-top: 28px; flex-wrap: wrap; }
-.ql { background: var(--bg2); border: 1px solid var(--border); border-radius: 10px; padding: 14px 22px; cursor: pointer; text-align: center; transition: border-color .2s, transform .2s; min-width: 140px; }
-.ql:hover { border-color: var(--accent); transform: translateY(-2px); }
-.ql .qi { font-size: 1.8rem; }
-.ql .qt { font-size: 0.82rem; color: var(--text2); margin-top: 6px; font-weight: 600; }
-
-/* SEARCH RESULTS */
-.search-box { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 24px; display: none; }
-.search-box h3 { font-size: 0.9rem; color: var(--text2); margin-bottom: 14px; }
-.result-item { display: flex; align-items: center; gap: 12px; padding: 9px 12px; border-radius: 8px; cursor: pointer; transition: background .15s; }
-.result-item:hover { background: var(--bg3); }
-.result-item .rname { font-weight: 600; font-size: 0.9rem; }
-.result-item .rsub { font-size: 0.78rem; color: var(--text2); }
-.badge { font-size: 0.7rem; padding: 2px 9px; border-radius: 10px; font-weight: 700; white-space: nowrap; }
-.b-weapon  { background: #5f3a1f; color: #ffa657; }
-.b-faction { background: #1f2d3a; color: #58a6ff; }
-.b-ship    { background: #1f3a2a; color: #56d364; }
-
-/* SECTION */
-.sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
-.sec-title { font-size: 1.25rem; font-weight: 700; }
-.filters { display: flex; gap: 8px; flex-wrap: wrap; }
-.fb { background: var(--bg2); border: 1px solid var(--border); border-radius: 20px; padding: 5px 14px; font-size: 0.78rem; color: var(--text2); cursor: pointer; transition: all .2s; }
-.fb:hover, .fb.on { background: var(--accent); border-color: var(--accent); color: #000; font-weight: 700; }
-.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
-
-/* CARD */
-.card { background: var(--bg2); border: 1px solid var(--border); border-radius: 12px; padding: 16px; transition: border-color .2s, transform .15s; }
-.card:hover { border-color: var(--accent); transform: translateY(-2px); }
-.card.sel { border-color: var(--green) !important; background: #0d2010; }
-.card-top { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 12px; }
-.cicon { width: 44px; height: 44px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
-.cname { font-weight: 700; font-size: 0.97rem; }
-.csub { font-size: 0.78rem; color: var(--text2); margin-top: 3px; }
-.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
-.tag { font-size: 0.7rem; padding: 3px 9px; border-radius: 12px; font-weight: 600; }
-.t-laser    { background:#1f3a5f; color:#79c0ff; }
-.t-plasma   { background:#3a1f5f; color:#d2a8ff; }
-.t-particle { background:#1f3a2a; color:#56d364; }
-.t-tachyon  { background:#5f3a1f; color:#ffa657; }
-.t-neutron  { background:#5f1f1f; color:#ff7b72; }
-.t-pulse    { background:#3a3a1f; color:#e3b341; }
-.t-photon   { background:#1f4040; color:#39d0d0; }
-.t-missile  { background:#3a2420; color:#f0883e; }
-.t-mine     { background:#2a2020; color:#e3b341; }
-.t-neutral  { background:#21262d; color:#8b949e; }
-.t-blue     { background:#1f2d3a; color:#58a6ff; }
-.t-green    { background:#1a2e1a; color:#3fb950; }
-.kv { display: flex; justify-content: space-between; font-size: 0.8rem; padding: 4px 0; border-bottom: 1px solid var(--bg3); }
-.kv:last-child { border: none; }
-.kv .k { color: var(--text2); }
-.kv .v { font-weight: 600; }
-.card-btn { margin-top: 12px; width: 100%; background: var(--bg3); border: 1px solid var(--border); border-radius: 7px; padding: 7px; font-size: 0.8rem; color: var(--text2); cursor: pointer; transition: all .2s; }
-.card-btn:hover { border-color: var(--accent); color: var(--accent); }
-.card-btn.sel-btn { border-color: var(--green); color: var(--green); }
-
-/* COMPARE BAR */
-.cbar { position: fixed; bottom: 0; left: 0; right: 0; background: var(--bg2); border-top: 2px solid var(--accent); padding: 12px 24px; display: none; align-items: center; gap: 14px; z-index: 200; flex-wrap: wrap; }
-.cbar.show { display: flex; }
-.cbar-items { display: flex; gap: 10px; flex: 1; flex-wrap: wrap; }
-.cchip { background: var(--bg3); border: 1px solid var(--accent); border-radius: 8px; padding: 5px 12px; font-size: 0.8rem; display: flex; align-items: center; gap: 8px; }
-.cchip .x { cursor: pointer; color: var(--accent2); font-weight: 900; line-height: 1; }
-.btn { padding: 8px 20px; border-radius: 8px; border: none; cursor: pointer; font-weight: 700; font-size: 0.84rem; }
-.btn-p { background: var(--accent); color: #000; }
-.btn-d { background: var(--accent2); color: #fff; }
-
-/* MODAL */
-.overlay { position: fixed; inset: 0; background: rgba(0,0,0,.75); z-index: 300; display: none; align-items: center; justify-content: center; padding: 20px; }
-.overlay.show { display: flex; }
-.modal { background: var(--bg2); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 960px; max-height: 88vh; overflow-y: auto; padding: 28px; }
-.modal h2 { font-size: 1.3rem; font-weight: 700; color: var(--accent); margin-bottom: 20px; }
-.modal-close { float: right; background: none; border: none; color: var(--text2); font-size: 1.4rem; cursor: pointer; line-height: 1; margin-top: -4px; }
-.ctable { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
-.ctable th { background: var(--bg3); padding: 10px 14px; text-align: left; border-bottom: 2px solid var(--border); font-weight: 700; }
-.ctable td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
-.ctable tr:hover td { background: var(--bg3); }
-.best { color: var(--green); font-weight: 700; }
-
-/* COMPAT TABLE */
-.compat-wrap { overflow-x: auto; margin-top: 20px; }
-.compat { width: 100%; border-collapse: collapse; font-size: 0.8rem; min-width: 750px; }
-.compat th { background: var(--bg3); padding: 8px 10px; border: 1px solid var(--border); font-weight: 600; text-align: center; font-size: 0.76rem; }
-.compat th.rh { text-align: left; min-width: 150px; }
-.compat td { padding: 7px 10px; border: 1px solid var(--border); text-align: center; }
-.compat td.fn { text-align: left; font-weight: 600; font-size: 0.82rem; }
-.compat td.fn .fs { font-size: 0.72rem; color: var(--text2); font-weight: 400; }
-.c-full { color: var(--green); }
-.c-part { color: var(--yellow); }
-.c-none { color: var(--bg3); }
-
-/* DARKSTAT */
-.ds-panel { background: var(--bg2); border: 1px solid #58a6ff55; border-radius: 12px; padding: 20px; margin-bottom: 24px; }
-.ds-panel h3 { color: var(--accent); font-weight: 700; margin-bottom: 8px; font-size: 1rem; }
-.ds-panel p { color: var(--text2); font-size: 0.84rem; line-height: 1.6; }
-.ds-panel a { color: var(--accent); text-decoration: none; font-weight: 600; }
-.ds-steps { display: flex; flex-direction: column; gap: 8px; margin-top: 14px; }
-.ds-step { display: flex; gap: 10px; font-size: 0.83rem; align-items: flex-start; }
-.ds-num { background: var(--accent); color: #000; border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.72rem; flex-shrink: 0; }
-</style>
+"/>
 </head>
 <body>
-
 <nav>
   <div class="logo">DF<span>Wiki</span></div>
   <div class="nav-links">
     <button class="active" onclick="goPage('home',this)">Home</button>
     <button onclick="goPage('factions',this)">Factions</button>
-    <button
+    <button onclick="goPage('weapons',this)">Weapons</button>
+    <button onclick="goPage('ships',this)">Ships</button>
+    <button onclick="goPage('compat',this)">Compatibility</button>
+  </div>
+  <div class="search-wrap">
+    <span class="search-icon">🔍</span>
+    <input type="text" id="globalSearch" placeholder="Search factions, ships, weapons..." oninput="doSearch(this.value)"/>
+  </div>
+</nav>
+
+<main>
+  <!-- SEARCH RESULTS -->
+  <div class="search-box" id="searchBox">
+    <h3 id="searchLabel"></h3>
+    <div id="searchResults"></div>
+  </div>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="hero">
+      <h1>Discovery Freelancer Wiki</h1>
+      <p>Weapons · Factions · Ships · Compatibility — all in one place</p>
+      <div class="stat-row">
+        <div class="stat-box"><div class="n">18</div><div class="l">Factions</div></div>
+        <div class="stat-box"><div class="n">42</div><div class="l">Ships</div></div>
+        <div class="stat-box"><div class="n">7</div><div class="l">Weapon Types</div></div>
+        <div class="stat-box"><div class="n">∞</div><div class="l">Builds</div></div>
+      </div>
+      <div class="quick-links">
+        <div class="ql" onclick="goPage('factions',null)"><div class="qi">⚔️</div><div class="qt">Factions</div></div>
+        <div class="ql" onclick="goPage('weapons',null)"><div class="qi">🔫</div><div class="qt">Weapons</div></div>
+        <div class="ql" onclick="goPage('ships',null)"><div class="qi">🚀</div><div class="qt">Ships</div></div>
+        <div class="ql" onclick="goPage('compat',null)"><div class="qi">📊</div><div class="qt">Compatibility</div></div>
+      </div>
+    </div>
+    <div class="ds-panel">
+      <h3>🔗 Darkstat Integration</h3>
+      <p>Darkstat is the official Discovery Freelancer item database. Use it alongside this wiki for exact stats, hardpoint filtering, and tech ID compatibility.</p>
+      <div class="ds-steps">
+        <div class="ds-step"><div class="ds-num">1</div><span>Visit <a href="https://darkstat.discoverygc.com" target="_blank">darkstat.discoverygc.com</a></span></div>
+        <div class="ds-step"><div class="ds-num">2</div><span>Select your ship → copy the HPType from Ship Details</span></div>
+        <div class="ds-step"><div class="ds-num">3</div><span>Paste the HPType into Darkstat search to find compatible guns, shields, missiles</span></div>
+        <div class="ds-step"><div class="ds-num">4</div><span>Use your faction ID to filter tech-compatible items in the equipment tabs</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FACTIONS -->
+  <div class="page" id="page-factions">
+    <div class="sec-head">
+      <div class="sec-title">⚔️ Factions</div>
+      <div class="filters" id="faction-filters">
+        <button class="fb on" onclick="filterFactions('all',this)">All</button>
+        <button class="fb" onclick="filterFactions('liberty',this)">Liberty</button>
+        <button class="fb" onclick="filterFactions('kusari',this)">Kusari</button>
+        <button class="fb" onclick="filterFactions('rheinland',this)">Rheinland</button>
+        <button class="fb" onclick="filterFactions('bretonia',this)">Bretonia</button>
+        <button class="fb" onclick="filterFactions('outcast',this)">Outcasts</button>
+        <button class="fb" onclick="filterFactions('corsair',this)">Corsairs</button>
+        <button class="fb" onclick="filterFactions('independent',this)">Independent</button>
+      </div>
+    </div>
+    <div class="grid" id="faction-grid"></div>
+  </div>
+
+  <!-- WEAPONS -->
+  <div class="page" id="page-weapons">
+    <div class="sec-head">
+      <div class="sec-title">🔫 Weapons</div>
+      <div class="filters" id="weapon-filters">
+        <button class="fb on" onclick="filterWeapons('all',this)">All</button>
+        <button class="fb" onclick="filterWeapons('energy',this)">Energy</button>
+        <button class="fb" onclick="filterWeapons('projectile',this)">Projectile</button>
+        <button class="fb" onclick="filterWeapons('missile',this)">Missile</button>
+        <button class="fb" onclick="filterWeapons('mine',this)">Mine/Torp</button>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <span style="color:var(--text2);font-size:0.85rem;">Compare up to 3:</span>
+      <button class="btn btn-p" onclick="openCompare('weapons')" id="wCompareBtn" style="display:none">Compare Selected</button>
+      <button class="btn btn-d" onclick="clearCompare('weapons')" id="wClearBtn" style="display:none">Clear</button>
+    </div>
+    <div class="grid" id="weapon-grid"></div>
+  </div>
+
+  <!-- SHIPS -->
+  <div class="page" id="page-ships">
+    <div class="sec-head">
+      <div class="sec-title">🚀 Ships</div>
+      <div class="filters" id="ship-filters">
+        <button class="fb on" onclick="filterShips('all',this)">All</button>
+        <button class="fb" onclick="filterShips('fighter',this)">Fighter</button>
+        <button class="fb" onclick="filterShips('bomber',this)">Bomber</button>
+        <button class="fb" onclick="filterShips('gunboat',this)">Gunboat</button>
+        <button class="fb" onclick="filterShips('frigate',this)">Frigate</button>
+        <button class="fb" onclick="filterShips('capital',this)">Capital</button>
+      </div>
+    </div>
+    <div style="margin-bottom:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+      <span style="color:var(--text2);font-size:0.85rem;">Compare up to 3:</span>
+      <button class="btn btn-p" onclick="openCompare('ships')" id="sCompareBtn" style="display:none">Compare Selected</button>
+      <button class="btn btn-d" onclick="clearCompare('ships')" id="sClearBtn" style="display:none">Clear</button>
+    </div>
+    <div class="grid" id="ship-grid"></div>
+  </div>
+
+  <!-- COMPATIBILITY -->
+  <div class="page" id="page-compat">
+    <div class="sec-head">
+      <div class="sec-title">📊 Faction × Weapon Compatibility</div>
+    </div>
+    <p style="color:var(--text2);font-size:0.85rem;margin-bottom:16px;">🟢 Full Access &nbsp; 🟡 Partial/Rep Required &nbsp; ⚫ Not Compatible</p>
+    <div class="compat-wrap">
+      <table class="compat" id="compat-table"></table>
+    </div>
+    <div style="margin-top:32px;">
+      <div class="sec-title" style="margin-bottom:14px;">🚀 Ship × Faction Compatibility</div>
+      <div class="compat-wrap">
+        <table class="compat" id="ship-compat-table"></table>
+      </div>
+    </div>
+  </div>
+</main>
+
+<!-- COMPARE MODAL -->
+<div class="overlay" id="compareOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <h2 id="modalTitle">Comparison</h2>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
