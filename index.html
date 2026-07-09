@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Discovery Freelancer Wiki Hub</title>
+  <meta name="description" content="Discovery Freelancer wiki hub with Darkstat-powered references for weapons, factions, ships, and compatibility search." />
+  <link rel="preconnect" href="https://api.fontshare.com" />
+  <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=cabinet-grotesk@500,700,800&display=swap" rel="stylesheet" />
+  <style>
+    :root, [data-theme="light"] {
+      --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+      --text-sm: clamp(0.875rem, 0.8rem + 0.35vw, 1rem);
+      --text-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+      --text-lg: clamp(1.125rem, 1rem + 0.75vw, 1.5rem);
+      --text-xl: clamp(1.5rem, 1.2rem + 1.25vw, 2.25rem);
+      --text-2xl: clamp(2rem, 1.2rem + 2.5vw, 3.5rem);
+      --space-1: .25rem; --space-2: .5rem; --space-3: .75rem; --space-4: 1rem; --space-5: 1.25rem; --space-6: 1.5rem; --space-8: 2rem; --space-10: 2.5rem; --space-12: 3rem; --space-16: 4rem; --space-20: 5rem;
+      --color-bg: #f7f6f2; --color-surface: #f9f8f5; --color-surface-2: #fbfbf9; --color-surface-offset: #f0ede8; --color-border: #d4d1ca; --color-divider: #dfdbd2;
+      --color-text: #28251d; --color-text-muted: #67645d; --color-text-faint: #9f9a91; --color-text-inverse: #f9f8f4;
+      --color-primary: #01696f; --color-primary-hover: #0c4e54; --color-primary-highlight: #cedcd8; --color-blue: #006494; --color-orange: #da7101; --color-success: #437a22;
+      --radius-sm: .375rem; --radius-md: .5rem; --radius-lg: .875rem; --radius-xl: 1.25rem; --radius-full: 9999px;
+      --shadow-sm: 0 1px 2px rgba(40,37,29,.06); --shadow-md: 0 12px 30px rgba(40,37,29,.09); --shadow-lg: 0 24px 64px rgba(40,37,29,.12);
+      --content-default: 1180px;
+      --font-display: 'Cabinet Grotesk', 'Inter', sans-serif;
+      --font-body: 'General Sans', 'Inter', sans-serif;
+    }
+    [data-theme="dark"] {
+      --color-bg: #171614; --color-surface: #1c1b19; --color-surface-2: #201f1d; --color-surface-offset: #252320; --color-border: #393836; --color-divider: #2a2927;
+      --color-text: #e7e3dd; --color-text-muted: #aca69b; --color-text-faint: #7b766d; --color-text-inverse: #171614;
+      --color-primary: #4f98a3; --color-primary-hover: #74bac4; --color-primary-highlight: #25363a; --color-blue: #7caed8; --color-orange: #f6ab56; --color-success: #8fbe67;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,.2); --shadow-md: 0 12px 30px rgba(0,0,0,.28); --shadow-lg: 0 24px 64px rgba(0,0,0,.38);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{min-height:100vh;font-family:var(--font-body);font-size:var(--text-base);line-height:1.6;color:var(--color-text);background:
+      radial-gradient(circle at top right,color-mix(in srgb,var(--color-primary) 12%,transparent),transparent 26%),
+      radial-gradient(circle at left bottom,color-mix(in srgb,var(--color-blue) 10%,transparent),transparent 22%),
+      var(--color-bg)}
+    img,svg{display:block;max-width:100%;height:auto}
+    a{text-decoration:none;color:inherit}
+    button,input,select{font:inherit;color:inherit}
+    button{background:none;border:0;cursor:pointer}
+    :focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+    .skip-link{position:absolute;left:-999px;top:var(--space-2);background:var(--color-primary);color:var(--color-text-inverse);padding:var(--space-3) var(--space-4);border-radius:var(--radius-md);z-index:100}
+    .skip-link:focus{left:var(--space-3)}
+    .container{width:min(calc(100% - 2rem),var(--content-default));margin:0 auto}
+    .site-header{position:sticky;top:0;z-index:50;backdrop-filter:blur(18px);background:color-mix(in srgb,var(--color-bg) 82%,transparent);border-bottom:1px solid color-mix(in srgb,var(--color-border) 86%,transparent)}
+    .header-row{display:flex;align-items:center;justify-content:space-between;gap:var(--space-4);padding:var(--space-4) 0}
+    .brand{display:flex;align-items:center;gap:var(--space-3);min-width:0}
+    .brand-mark{width:46px;height:46px;padding:8px;border-radius:15px;background:linear-gradient(135deg,color-mix(in srgb,var(--color-primary) 24%,var(--color-surface)),var(--color-surface-offset));border:1px solid color-mix(in srgb,var(--color-primary) 28%,var(--color-border));box-shadow:var(--shadow-sm)}
+    .brand-text strong{display:block;font-family:var(--font-display);font-size:var(--text-lg);line-height:1}
+    .brand-text span{display:block;font-size:var(--text-sm);color:var(--color-text-muted)}
+    .header-actions{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+    .chip-btn,.theme-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 var(--space-4);border-radius:var(--radius-full);border:1px solid color-mix(in srgb,var(--color-border) 88%,transparent);background:color-mix(in srgb,var(--color-surface) 88%,transparent)}
+    .hero{padding:clamp(var(--space-12),10vw,var(--space-20)) 0 var(--space-10)}
+    .hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:var(--space-8);align-items:start}
+    .eyebrow{display:inline-flex;align-items:center;gap:var(--space-2);padding:var(--space-2) var(--space-3);border-radius:var(--radius-full);font-size:var(--text-sm);background:color-mix(in srgb,var(--color-primary) 12%,var(--color-surface));color:var(--color-primary-hover);margin-bottom:var(--space-4)}
+    h1,h2,h3{font-family:var(--font-display);line-height:1.08;letter-spacing:-.03em}
+    h1{font-size:var(--text-2xl);max-width:12ch}
+    .hero p{margin-top:var(--space-4);max-width:64ch;color:var(--color-text-muted)}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:var(--space-3);margin-top:var(--space-6)}
+    .btn-primary,.btn-secondary{display:inline-flex;align-items:center;justify-content:center;min-height:48px;padding:0 var(--space-5);border-radius:var(--radius-full);font-size:var(--text-sm);font-weight:600}
+    .btn-primary{background:var(--color-primary);color:var(--color-text-inverse);box-shadow:var(--shadow-md)}
+    .btn-secondary{background:color-mix(in srgb,var(--color-surface) 92%,transparent);border:1px solid color-mix(in srgb,var(--color-border) 86%,transparent)}
+    .hero-panel,.section-card,.mini-card,.command-card,.search-shell{background:color-mix(in srgb,var(--color-surface) 92%,transparent);border:1px solid color-mix(in srgb,var(--color-border) 84%,transparent);border-radius:var(--radius-xl);box-shadow:var(--shadow-md)}
+    .hero-panel{padding:var(--space-6);display:grid;gap:var(--space-4)}
+    .stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+    .mini-card{padding:var(--space-4);border-radius:var(--radius-lg);background:color-mix(in srgb,var(--color-surface-offset) 90%,transparent)}
+    .mini-card strong{display:block;font-family:var(--font-display);font-size:var(--text-lg)}
+    .mini-card span{font-size:var(--text-sm);color:var(--color-text-muted)}
+    main section{padding:var(--space-8) 0}
+    .section-head{display:flex;align-items:end;justify-content:space-between;gap:var(--space-4);flex-wrap:wrap;margin-bottom:var(--space-5)}
+    .section-head p{max-width:62ch;color:var(--color-text-muted)}
+    .layout{display:grid;grid-template-columns:270px 1fr;gap:var(--space-5)}
+    .toc{position:sticky;top:92px;align-self:start;padding:var(--space-4);border-radius:var(--radius-xl);background:color-mix(in srgb,var(--color-surface) 92%,transparent);border:1px solid color-mix(in srgb,var(--color-border) 84%,transparent)}
+    .toc ul{list-style:none;display:grid;gap:var(--space-2)}
+    .toc a{display:block;padding:var(--space-2) var(--space-3);border-radius:var(--radius-md);color:var(--color-text-muted)}
+    .toc a.active,.toc a:hover{background:color-mix(in srgb,var(--color-primary) 10%,var(--color-surface));color:var(--color-text)}
+    .search-shell{padding:var(--space-5);display:grid;gap:var(--space-4);margin-bottom:var(--space-5)}
+    .smart-search{display:grid;grid-template-columns:1fr auto;gap:var(--space-3)}
+    .search-input,.filter-select{min-height:50px;width:100%;padding:0 var(--space-4);border-radius:var(--radius-lg);border:1px solid color-mix(in srgb,var(--color-border) 84%,transparent);background:color-mix(in srgb,var(--color-surface) 96%,transparent)}
+    .quick-tags,.filter-row{display:flex;gap:var(--space-3);flex-wrap:wrap}
+    .quick-tag{display:inline-flex;align-items:center;min-height:40px;padding:0 var(--space-4);border-radius:var(--radius-full);background:color-mix(in srgb,var(--color-surface-offset) 88%,transparent);border:1px solid color-mix(in srgb,var(--color-border) 80%,transparent);font-size:var(--text-sm)}
+    .quick-tag.active{background:color-mix(in srgb,var(--color-primary) 16%,var(--color-surface));border-color:color-mix(in srgb,var(--color-primary) 35%,var(--color-border));color:var(--color-primary-hover)}
+    .grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:var(--space-4)}
+    .col-4{grid-column:span 4}.col-5{grid-column:span 5}.col-6{grid-column:span 6}.col-7{grid-column:span 7}.col-8{grid-column:span 8}.col-12{grid-column:span 12}
+    .section-card,.command-card{padding:var(--space-5);display:grid;gap:var(--space-4)}
+    .section-card h3,.command-card h3{font-size:var(--text-lg)}
+    .meta-row{display:flex;gap:var(--space-2);flex-wrap:wrap}
+    .tag{display:inline-flex;align-items:center;min-height:32px;padding:0 var(--space-3);border-radius:var(--radius-full);background:color-mix(in srgb,var(--color-primary) 12%,var(--color-surface));color:var(--color-primary-hover);font-size:var(--text-xs);font-weight:700;letter-spacing:.03em;text-transform:uppercase}
+    .tag.alt{background:color-mix(in srgb,var(--color-orange) 12%,var(--color-surface));color:var(--color-orange)}
+    .tag.good{background:color-mix(in srgb,var(--color-success) 14%,var(--color-surface));color:var(--color-success)}
+    .list{display:grid;gap:var(--space-2);color:var(--color-text-muted)}
+    .compat-table{overflow:auto;border-radius:var(--radius-lg);border:1px solid color-mix(in srgb,var(--color-border) 84%,transparent)}
+    table{width:100%;border-collapse:collapse;min-width:820px}
+    th,td{padding:var(--space-3) var(--space-4);text-align:left;border-bottom:1px solid var(--color-divider);vertical-align:top}
+    th{font-size:var(--text-sm);background:color-mix(in srgb,var(--color-surface-offset) 92%,transparent);color:var(--color-text-muted)}
+    td{font-size:var(--text-sm)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:var(--text-sm);padding:.2rem .45rem;border-radius:.4rem;background:color-mix(in srgb,var(--color-surface-offset) 92%,transparent)}
+    .footer{padding:var(--space-10) 0 var(--space-12);color:var(--color-text-muted)}
+    .footer-card{padding:var(--space-5);border-radius:var(--radius-xl);background:color-mix(in srgb,var(--color-surface) 92%,transparent);border:1px solid color-mix(in srgb,var(--color-border) 84%,transparent)}
+    [hidden]{display:none!important}
+    @media (max-width:980px){.hero-grid,.layout{grid-template-columns:1fr}.toc{position:static;order:-1}.col-4,.col-5,.col-6,.col-7,.col-8{grid-column:span 12}}
+    @media (max-width:640px){.header-row,.smart-search{display:grid;grid-template-columns:1fr}.header-actions{justify-content:start}.stats{grid-template-columns:1fr}.hero-actions,.quick-tags,.filter-row{flex-direction:column}}
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header">
+    <div class="container header-row">
+      <a class="brand" href="#top" aria-label="Discovery Freelancer Wiki Hub home">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none">
+            <path d="M10 32L32 8l22 24-22 24L10 32Z" stroke="currentColor" stroke-width="4"/>
+            <path d="M22 32h20M32 22v20" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="brand-text"><strong>DF Wiki Hub</strong><span>Darkstat-aware compatibility wiki</span></div>
+      </a>
+      <div class="header-actions">
+        <a class="chip-btn" href="#search">Compatibility search</a>
+        <a class="chip-btn" href="#github-ready">GitHub setup</a>
+        <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch theme"></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="content" class="container">
+    <section class="hero" id="top">
+      <div class="hero-grid">
+        <div>
+          <div class="eyebrow">Built for wiki first, Vercel later</div>
+          <h1>Darkstat-enhanced Discovery Freelancer knowledge hub.</h1>
+          <p>This version is structured so you can publish it directly to GitHub now, then move to Vercel later with the same repo layout. It also adds Darkstat-based compatibility methods so players can search by faction, tech cell, hardpoint, role, or ship path without needing to know the whole stat ecosystem first.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#search">Use easier search</a>
+            <a class="btn-secondary" href="https://darkstat.dd84ai.com" target="_blank" rel="noopener noreferrer">Open Darkstat</a>
+          </div>
+        </div>
+        <aside class="hero-panel" aria-label="Project summary">
+          <div>
+            <h2 style="font-size:var(--text-xl)">What changed</h2>
+            <p style="margin-top:.5rem;color:var(--color-text-muted)">The site now treats Darkstat as the live reference layer and your wiki as the simpler planning layer.</p>
+          </div>
+          <div class="stats">
+            <div class="mini-card"><strong>3</strong><span>search modes</span></div>
+            <div class="mini-card"><strong>5</strong><span>compatibility shortcuts</span></div>
+            <div class="mini-card"><strong>1</strong><span>single-file starter</span></div>
+            <div class="mini-card"><strong>0</strong><span>build tools needed</span></div>
+          </div>
+          <div class="mini-card">
+            <span style="display:block;margin-bottom:.4rem">Darkstat-powered ideas</span>
+            <div class="list">
+              <div>ID-based tech filtering.</div>
+              <div>HPType-driven equipment lookup.</div>
+              <div>Ship slot compatibility search.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <div class="layout">
+      <nav class="toc" aria-label="Page navigation">
+        <ul>
+          <li><a href="#search" class="active">Search</a></li>
+          <li><a href="#darkstat">Darkstat data</a></li>
+          <li><a href="#weapons">Weapons</a></li>
+          <li><a href="#factions">Factions</a></li>
+          <li><a href="#ships">Ships</a></li>
+          <li><a href="#github-ready">GitHub + Vercel</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <section id="search">
+          <div class="section-head">
+            <div>
+              <h2>Compatibility search</h2>
+              <p>The search is easier now because it supports plain-language prompts, quick filters, and role-based grouping instead of forcing exact item names every time.</p>
+            </div>
+          </div>
+          <div class="search-shell">
+            <div class="smart-search">
+              <input id="searchInput" class="search-input" type="search" placeholder="Try: liberty laser, corsair pulse, universal ship, hp_turret_special_6, id compatible" aria-label="Search all wiki content" />
+              <button class="btn-secondary" type="button" id="clearSearch">Clear</button>
+            </div>
+            <div class="quick-tags" aria-label="Quick search chips">
+              <button class="quick-tag" data-preset="laser">Laser</button>
+              <button class="quick-tag" data-preset="pulse">Pulse</button>
+              <button class="quick-tag" data-preset="tachyon">Tachyon</button>
+              <button class="quick-tag" data-preset="universal ship">Universal ship</button>
+              <button class="quick-tag" data-preset="faction-bound">Faction-bound</button>
+              <button class="quick-tag" data-preset="hp_turret_special_6">Hardpoint</button>
+              <button class="quick-tag" data-preset="id compatible">ID compatible</button>
+            </div>
+            <div class="filter-row">
+              <select id="sectionFilter" class="filter-select" aria-label="Filter by content area">
+                <option value="all">All content</option>
+                <option value="weapon">Weapons</option>
+                <option value="faction">Factions</option>
+                <option value="ship">Ships</option>
+                <option value="darkstat">Darkstat methods</option>
+              </select>
+              <select id="roleFilter" class="filter-select" aria-label="Filter by compatibility mode">
+                <option value="all">All compatibility modes</option>
+                <option value="faction-bound">Faction-bound</option>
+                <option value="universal">Universal</option>
+                <option value="training">Training-friendly</option>
+                <option value="tech-cell">Tech-cell / ID</option>
+                <option value="hardpoint">Hardpoint / slot</option>
+              </select>
+            </div>
+          </div>
+        </section>
+
+        <section id="darkstat">
+          <div class="section-head">
+            <div>
+              <h2>Darkstat data</h2>
+              <p>Darkstat already supports static-site generation, API access, item filtering, pinning, hardpoint compatibility search, ship-slot lookup, and Discovery-specific tech compatibility filtering, so your wiki should link to those strengths instead of duplicating the entire tool.</p>
+            </div>
+          </div>
+          <div class="grid">
+            <article class="command-card col-6" data-search-item data-section="darkstat" data-role="tech-cell" data-tags="darkstat id compatible tech compatibility energy regeneration selector id">
+              <div class="meta-row"><span class="tag good">ID compatible</span><span class="tag">Darkstat method</span></div>
+              <h3>Tech-cell compatibility by ID</h3>
+              <p>Darkstat lets players choose an ID in the top-right selector of supported tabs, then automatically filters items to those compatible with that ID and tech cell.</p>
+              <div class="list">
+                <div>Use this for: faction-safe loadouts and energy-regeneration-safe fitting.</div>
+                <div>Wiki shortcut: add “Open in Darkstat” links beside faction cards later.</div>
+              </div>
+            </article>
+            <article class="command-card col-6" data-search-item data-section="darkstat" data-role="hardpoint" data-tags="darkstat hptype hardpoint hp_turret_special_6 ship details compatible equipment">
+              <div class="meta-row"><span class="tag alt">Hardpoint search</span><span class="tag">Darkstat method</span></div>
+              <h3>Hardpoint-driven search</h3>
+              <p>Darkstat shows internal hardpoints in Ship Details and recommends copying the exact HPType, such as <span class="mono">hp_turret_special_6</span>, into Guns, Missiles, Shields, Engines, or other tabs to find compatible equipment.</p>
+              <div class="list">
+                <div>Use this for: exact slot matching.</div>
+                <div>Wiki shortcut: a copy-ready hardpoint search guide is easier than making users guess slot names.</div>
+              </div>
+            </article>
+            <article class="command-card col-5" data-search-item data-section="darkstat" data-role="ship" data-tags="ships specific slot mining array ship slot find all ships">
+              <div class="meta-row"><span class="tag">Ship slot lookup</span></div>
+              <h3>Find ships by equipment slot</h3>
+              <p>Darkstat documentation explains that you can search ships by the slot nickname embedded in ship configs, which makes it useful for finding hulls that can mount a specific tool or weapon type.</p>
+            </article>
+            <article class="command-card col-7" data-search-item data-section="darkstat" data-role="darkstat" data-tags="searching bars infocard filter multiple matches pinning compare search highlight">
+              <div class="meta-row"><span class="tag">Search behavior</span></div>
+              <h3>Why Darkstat should be the deep-search layer</h3>
+              <p>Darkstat already supports broad row-content search, infocard text search, multiple matching results, sortable columns, and a pinning feature for side-by-side comparison, which makes it stronger as the advanced explorer while your site stays clean and beginner-friendly.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="weapons">
+          <div class="section-head">
+            <div>
+              <h2>Weapons</h2>
+              <p>This section keeps the simplified build logic, but now it is written to work as an overview layer above Darkstat’s detailed gun and modifier tabs.</p>
+            </div>
+          </div>
+          <div class="grid">
+            <article class="section-card col-6" data-search-item data-section="weapon" data-role="faction-bound" data-tags="laser photon rapid fire anti positron liberty blood dragons junkers zoners rogues">
+              <div class="meta-row"><span class="tag">Laser / Photon</span><span class="tag alt">fast refire</span></div>
+              <h3>Rapid shield pressure lane</h3>
+              <p>Laser and photon families are the easy recommendation when someone wants fast-firing anti-positron pressure and cleaner hit confirmation in dogfights.</p>
+            </article>
+            <article class="section-card col-6" data-search-item data-section="weapon" data-role="faction-bound" data-tags="pulse shield breaker corsair civilian utility strip shields">
+              <div class="meta-row"><span class="tag">Pulse</span><span class="tag alt">shield strip</span></div>
+              <h3>Utility-first shield cracking</h3>
+              <p>Pulse weapons are best treated as a utility group for shield removal before swapping to a hull-focused weapon line.</p>
+            </article>
+            <article class="section-card col-4" data-search-item data-section="weapon" data-role="faction-bound" data-tags="plasma graviton heavy impact liberty rheinland">
+              <div class="meta-row"><span class="tag">Plasma</span></div>
+              <h3>Heavy anti-graviton shots</h3>
+              <p>Plasma rewards precision, offers strong anti-graviton pressure, and suits slower but efficient heavy-shot builds.</p>
+            </article>
+            <article class="section-card col-4" data-search-item data-section="weapon" data-role="faction-bound" data-tags="particle outcasts xenos bretonia balanced graviton">
+              <div class="meta-row"><span class="tag">Particle</span></div>
+              <h3>Balanced anti-graviton workhorse</h3>
+              <p>Particle is the easier anti-graviton recommendation when players want better rhythm and usability than plasma.</p>
+            </article>
+            <article class="section-card col-4" data-search-item data-section="weapon" data-role="faction-bound" data-tags="tachyon neutron molecular order outcasts corsairs mollys lane hackers">
+              <div class="meta-row"><span class="tag">Tachyon / Neutron</span></div>
+              <h3>Molecular shield route</h3>
+              <p>Tachyon and neutron families fit molecular-shield hunting, with tachyon leaning range-heavy and neutron leaning efficiency-heavy.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="factions">
+          <div class="section-head">
+            <div>
+              <h2>Factions</h2>
+              <p>These rows are tuned for easier lookup phrases, so a player can search plain terms like “Liberty laser” or “Outcast particle” and still land on the right result.</p>
+            </div>
+          </div>
+          <div class="compat-table">
+            <table>
+              <thead>
+                <tr><th>Faction</th><th>Tech fit</th><th>Easy search aliases</th><th>Recommended path</th></tr>
+              </thead>
+              <tbody>
+                <tr data-search-item data-section="faction" data-role="faction-bound" data-tags="liberty navy lsf police laser plasma liberty laser liberty plasma"><td>Liberty Police / Navy / LSF</td><td>Laser + Plasma</td><td>Liberty laser, Liberty plasma</td><td>Stay inside Liberty military ecosystem first.</td></tr>
+                <tr data-search-item data-section="faction" data-role="faction-bound" data-tags="kusari navy police photon neutron kusari photon kusari neutron"><td>Kusari Police / Naval</td><td>Photon + Neutron</td><td>Kusari photon, Kusari neutron</td><td>Strong broad-coverage military pairing.</td></tr>
+                <tr data-search-item data-section="faction" data-role="faction-bound" data-tags="rheinland military police tachyon plasma rheinland tachyon rheinland plasma"><td>Rheinland Police / Military</td><td>Tachyon + Plasma</td><td>Rheinland tachyon, Rheinland plasma</td><td>Good when you want range plus heavier shots.</td></tr>
+                <tr data-search-item data-section="faction" data-role="faction-bound" data-tags="corsairs neutron pulse corsair pulse corsair neutron"><td>Corsairs</td><td>Neutron + Pulse</td><td>Corsair pulse, Corsair neutron</td><td>Shield-strip plus molecular follow-up.</td></tr>
+                <tr data-search-item data-section="faction" data-role="faction-bound" data-tags="outcasts tachyon particle outcast tachyon outcast particle"><td>Outcasts</td><td>Tachyon + Particle</td><td>Outcast tachyon, Outcast particle</td><td>High-performance damage-leaning line.</td></tr>
+                <tr data-search-item data-section="faction" data-role="tech-cell" data-tags="civilian laser pulse id compatible neutral tech"><td>Civilian</td><td>Laser + Pulse</td><td>Civilian laser, neutral pulse</td><td>Good neutral base for simpler compatibility.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ships">
+          <div class="section-head">
+            <div>
+              <h2>Ships</h2>
+              <p>Ship recommendations are grouped the way players actually choose: strict roleplay, flexible fallback, training, or exact hardpoint hunting.</p>
+            </div>
+          </div>
+          <div class="grid">
+            <article class="section-card col-4" data-search-item data-section="ship" data-role="faction-bound" data-tags="faction-bound roleplay liberty navy kusari corsair matching ship">
+              <div class="meta-row"><span class="tag good">Faction-bound</span></div>
+              <h3>Best for strict roleplay</h3>
+              <p>The easiest compatibility rule remains matching your ship line to your faction identity whenever possible.</p>
+            </article>
+            <article class="section-card col-4" data-search-item data-section="ship" data-role="universal" data-tags="universal ship eagle saber jackdaw fallback compatible">
+              <div class="meta-row"><span class="tag">Universal</span></div>
+              <h3>Best flexible fallback</h3>
+              <p>Eagle, Saber, and Jackdaw remain the simple fallback names when a faction-specific hull is too weak or too narrow.</p>
+            </article>
+            <article class="section-card col-4" data-search-item data-section="ship" data-role="training" data-tags="training defender odin mark i learning pvp beginner">
+              <div class="meta-row"><span class="tag alt">Training-friendly</span></div>
+              <h3>Best for learning combat</h3>
+              <p>Defender and Odin Mark I are easier recommendations for pilots learning snub combat because they sit closer to the middle than extreme specialist ships.</p>
+            </article>
+            <article class="section-card col-12" data-search-item data-section="ship" data-role="hardpoint" data-tags="hardpoint exact slot hp type search ship details mining array equipment slot compatible ship">
+              <div class="meta-row"><span class="tag alt">Exact slot path</span></div>
+              <h3>Best for exact equipment compatibility</h3>
+              <p>When you care more about what a ship can mount than about faction fantasy, use Darkstat’s ship details and HPType search path instead of broad role labels.</p>
+              <div class="list">
+                <div>Step 1: open Ship Details.</div>
+                <div>Step 2: copy the exact HPType or weapon slot nickname.</div>
+                <div>Step 3: search that string in ship or equipment views.</div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section id="github-ready">
+          <div class="section-head">
+            <div>
+              <h2>GitHub + Vercel</h2>
+              <p>This starter is intentionally static, so it works well in a GitHub repository right away and can be deployed on Vercel later without changing the core structure.</p>
+            </div>
+          </div>
+          <div class="grid">
+            <article class="section-card col-6">
+              <h3>Recommended repo structure</h3>
+              <div class="list">
+                <div><span class="mono">/index.html</span> for the site entry point.</div>
+                <div><span class="mono">/data/</span> later for JSON files like ships, factions, weapons, and compatibility maps.</div>
+                <div><span class="mono">/assets/</span> for images, icons, and logos.</div>
+                <div><span class="mono">/README.md</span> for setup notes and Darkstat source references.</div>
+              </div>
+            </article>
+            <article class="section-card col-6">
+              <h3>Best next upgrade path</h3>
+              <div class="list">
+                <div>Phase 1: keep this as static HTML on GitHub.</div>
+                <div>Phase 2: move the compatibility data into JSON files.</div>
+                <div>Phase 3: add a lightweight frontend on Vercel, such as Vite or Next.js, once the data model is stable.</div>
+                <div>Phase 4: optionally connect to Darkstat API-backed lookups for live data panels.</div>
+              </div>
+            </article>
+            <article class="section-card col-12">
+              <h3>Suggested README points</h3>
+              <div class="list">
+                <div>Mention that Darkstat supports static-site generation and can also run as a live backend with API access.</div>
+                <div>Mention that Darkstat is licensed under AGPL and requires keeping derivative code open and crediting the original author if you fork or modify that code directly.</div>
+                <div>Clarify that your wiki is a companion layer, not a full replacement for Darkstat’s advanced explorer.</div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer container">
+    <div class="footer-card">
+      <p>This version is repo-friendly and ready to drop into GitHub as a static site starter before you expand it into a larger Vercel project.</p>
+    </div>
+  </footer>
+
+  <script>
+    (() => {
+      const root = document.documentElement;
+      const toggle = document.querySelector('[data-theme-toggle]');
+      let theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      function updateTheme(){
+        root.setAttribute('data-theme', theme);
+        toggle.innerHTML = theme === 'dark'
+          ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+          : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+      }
+      updateTheme();
+      toggle.addEventListener('click', () => { theme = theme === 'dark' ? 'light' : 'dark'; updateTheme(); });
+
+      const searchInput = document.getElementById('searchInput');
+      const clearSearch = document.getElementById('clearSearch');
+      const sectionFilter = document.getElementById('sectionFilter');
+      const roleFilter = document.getElementById('roleFilter');
+      const quickTags = [...document.querySelectorAll('.quick-tag')];
+      const items = [...document.querySelectorAll('[data-search-item]')];
+      let activePreset = '';
+
+      function applyFilters() {
+        const manual = (searchInput.value || '').trim().toLowerCase();
+        const term = manual || activePreset;
+        const section = sectionFilter.value;
+        const role = roleFilter.value;
+        items.forEach(item => {
+          const haystack = ((item.textContent || '') + ' ' + (item.dataset.tags || '')).toLowerCase();
+          const sectionMatch = section === 'all' || item.dataset.section === section;
+          const roleMatch = role === 'all' || item.dataset.role === role;
+          const termMatch = !term || haystack.includes(term);
+          item.hidden = !(sectionMatch && roleMatch && termMatch);
+        });
+      }
+
+      quickTags.forEach(btn => btn.addEventListener('click', () => {
+        const preset = btn.dataset.preset.toLowerCase();
+        activePreset = activePreset === preset ? '' : preset;
+        searchInput.value = '';
+        quickTags.forEach(tag => tag.classList.toggle('active', tag.dataset.preset.toLowerCase() === activePreset));
+        applyFilters();
+      }));
+
+      searchInput.addEventListener('input', () => {
+        activePreset = '';
+        quickTags.forEach(tag => tag.classList.remove('active'));
+        applyFilters();
+      });
+      sectionFilter.addEventListener('change', applyFilters);
+      roleFilter.addEventListener('change', applyFilters);
+      clearSearch.addEventListener('click', () => {
+        searchInput.value = '';
+        activePreset = '';
+        sectionFilter.value = 'all';
+        roleFilter.value = 'all';
+        quickTags.forEach(tag => tag.classList.remove('active'));
+        applyFilters();
+        searchInput.focus();
+      });
+      applyFilters();
+
+      const tocLinks = [...document.querySelectorAll('.toc a')];
+      const sections = tocLinks.map(link => document.querySelector(link.getAttribute('href'))).filter(Boolean);
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            tocLinks.forEach(link => link.classList.toggle('active', link.getAttribute('href') === '#' + entry.target.id));
+          }
+        });
+      }, {rootMargin:'-30% 0px -55% 0px',threshold:0.01});
+      sections.forEach(section => observer.observe(section));
+    })();
+  </script>
+</body>
+</html>
